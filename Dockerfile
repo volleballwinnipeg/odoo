@@ -87,7 +87,7 @@ RUN pip3 install -r /odoo/requirements.txt
 
 # Copy entrypoint script and Odoo configuration file
 COPY ./entrypoint.sh /entrypoint.sh
-COPY ./odoo.conf /etc/odoo/odoo.conf
+COPY ./debian/odoo.conf /etc/odoo/odoo.conf
 
 # Set permissions and Mount /var/lib/odoo to allow restoring filestore and /mnt/extra-addons for users addons
 RUN chown odoo /etc/odoo/odoo.conf \
