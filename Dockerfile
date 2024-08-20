@@ -91,16 +91,15 @@ RUN npm install -g rtlcss
 RUN git clone --depth 1 --branch docker-file https://github.com/volleyballwinnipeg/odoo.git /odoo
 
 # Install Python dependencies
-# RUN python3 -m pip install --upgrade pip
+RUN python3 -m pip install --upgrade pip virtualenv
 
-# RUN python3 -m venv odoo-env
-# RUN source odoo-env/bin/activate
+# Create a virtual environment
+RUN python3 -m venv /odoo-env
 
-# RUN pip3 install -r /odoo/requirements.txt
+# Activate the virtual environment and install dependencies
+RUN /bin/bash -c "source /odoo-env/bin/activate"
 
-RUN python3 -m venv /odoo-env \
-    && /odoo-env/bin/pip install --upgrade pip \
-    && /odoo-env/bin/pip install -r /odoo/requirements.txt
+RUN python3 -m pip install -r /odoo/requirements.txt
 
 # Copy entrypoint script and Odoo configuration file
 COPY ./entrypoint.sh /entrypoint.sh
@@ -120,7 +119,7 @@ EXPOSE 8069 8071 8072
 COPY wait-for-psql.py /usr/local/bin/wait-for-psql.py
 
 # Set default user when running the container
-USER odoo
+# USER odoo
 
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["odoo"]
+CMD ["odoo-bin"]
